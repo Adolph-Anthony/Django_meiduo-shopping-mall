@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
 
+
 ]
 
 MIDDLEWARE = [
@@ -189,11 +190,9 @@ LOGGING = {
     }
 }
 
-# 指明自定义模型类   执行创建迁移数据库模型 必须注意添加此配置
-AUTH_USER_MODEL = "users.User"
-
 
 REST_FRAMEWORK = {
     # 异常处理
     'EXCEPTION_HANDLER': 'meiduo_29.utils.exceptions.exception_handler',
 }
+
