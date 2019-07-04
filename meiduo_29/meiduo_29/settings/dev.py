@@ -26,8 +26,8 @@ SECRET_KEY = 'jvrmlmlztcphtqk6s37z+jac)2=5%c*2_!-f3@+(oyft+j8nh&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+#配置域名
+ALLOWED_HOSTS = ['127.0.0.1','www.meiduo.site','api.meiduo.site','localhost']
 
 
 # Application definition
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     # 太麻烦,前面都是固定的
     # 'meiduo_29.apps.users.apps.UserConfig',
     'users.apps.UsersConfig',
+    # 验证子应用
+    'verifications.apps.VerificationsConfig',
 
 
 ]
@@ -107,7 +109,16 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
+    },
+    '''图形验证'''
+    "verify_code": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://10.211.55.5:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
+
 }
 #给admin站点使用的session
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
