@@ -27,9 +27,11 @@ class ImageCodeView(APIView):
 
         # 保存真实值
         # 连接verify_code 2号redis数据库
+
         redis_conn = get_redis_connection('verify_code')
         # 设置有效期setex(存到redis数据库里的键名字,数据有效期,数据)
+
         redis_conn.setex("img_%s" % image_code_id, constants.IMAGE_CODE_REDIS_EXPIRES, text)
 
         # 返回图片
-        return HttpResponse(image,content_type="image/jpg")
+        return HttpResponse(image,content_type="images/jpg")
