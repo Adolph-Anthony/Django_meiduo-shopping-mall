@@ -92,7 +92,7 @@
         <entry file="file://$PROJECT_DIR$/meiduo_29/celery_tasks/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
-              <caret line="11" column="48" lean-forward="false" selection-start-line="11" selection-start-column="48" selection-end-line="11" selection-end-column="48" />
+              <caret line="11" column="25" lean-forward="true" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -653,7 +653,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562231048483</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Celery目录搭建">
+      <created>1562241969408</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1562241969408</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView">
@@ -704,7 +711,8 @@
     <MESSAGE value="图片验证码前段逻辑实现,后端图片验证逻辑bug修复" />
     <MESSAGE value="短信验证码后端逻辑实现,增加redis数据库读写优化,增加防止图片被多次验证逻辑" />
     <MESSAGE value="短信验证前段逻辑实现,跨域请求解决" />
-    <option name="LAST_COMMIT_MESSAGE" value="短信验证前段逻辑实现,跨域请求解决" />
+    <MESSAGE value="Celery目录搭建" />
+    <option name="LAST_COMMIT_MESSAGE" value="Celery目录搭建" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1126,7 +1134,7 @@
     <entry file="file://$PROJECT_DIR$/meiduo_29/celery_tasks/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
-          <caret line="11" column="48" lean-forward="false" selection-start-line="11" selection-start-column="48" selection-end-line="11" selection-end-column="48" />
+          <caret line="11" column="25" lean-forward="true" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
           <folding />
         </state>
       </provider>
