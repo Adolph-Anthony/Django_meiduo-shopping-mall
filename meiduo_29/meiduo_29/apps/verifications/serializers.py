@@ -7,12 +7,12 @@ class ImageCodeCheckSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         # 跨字段联合校验 attrs 一个字典 被检验的数据有哪些
-        print("attrs:%s"%attrs)
+        # print("attrs:%s"%attrs)
         image_code_id = attrs['image_code_id']
         text = attrs['text']
 
         # 查询真实图片验证码
-        redis_conn = get_redis_connection('verify_codes')
+        redis_conn = get_redis_connection('verify_code')
         real_image_code_text = redis_conn.get('img_%s' % image_code_id)
         if not real_image_code_text:
             raise serializers.ValidationError('图片验证码无效')

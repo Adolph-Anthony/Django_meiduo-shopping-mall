@@ -67,14 +67,13 @@ class SMSCodeView(GenericAPIView):
         serializer = self.get_serializer(data = request.query_params)
         #设置验证并且抛出异常
         serializer.is_valid(raise_exception = True)
-        print(request.urls)
 
         # 生成短信验证码
         sms_code = '%06d'%random.randint(0,999999)
 
         # 保存短信验证码 手机发送记录,
-        redis_conn = get_redis_connection('verify_codes')
-        # redis_conn.setex("sms_%s" % mobile, constants.SMS_CODE_REDIS_EXPIRES, sms_code)
+        redis_conn = get_redis_connection('verify_code')
+        # redis_conn.setex("sms_%s" % mobile, constants.SMS_CODE_REDIS_EXPIRES, sms_code)/
         # redis_conn.setex("send_flag_%s" % mobile, constants.SEND_SMS_CODE_INTERVAL, 1)
         # 使用redis管道提升数据库高并发能力
         pl = redis_conn.pipeline()

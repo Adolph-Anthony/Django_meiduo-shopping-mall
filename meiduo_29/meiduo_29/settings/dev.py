@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     # 太麻烦,前面都是固定的
     # 'meiduo_29.apps.users.apps.UserConfig',
     'users.apps.UsersConfig',
@@ -47,9 +48,11 @@ INSTALLED_APPS = [
     'verifications.apps.VerificationsConfig',
 
 
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # 专门解决cors的中间件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -207,3 +210,11 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'meiduo_29.utils.exceptions.exception_handler',
 }
 
+# CORS
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'http://www.meiduo.site:8080',
+    'http://api.meiduo.site:8000'
+)
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
