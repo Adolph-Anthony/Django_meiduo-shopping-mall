@@ -88,6 +88,7 @@ class SMSCodeView(GenericAPIView):
             #参数 手机号 [短信验证码,有效期] 短信模版
             expires = constants.SMS_CODE_REDIS_EXPIRES // 60
             result = ccp.send_template_sms(mobile,[sms_code,expires],constants.SMS_CODE_TEMP_ID)
+            print(sms_code)
         except Exception as e:
             logger.error('短信发送[异常][mobile:%s,message:%s]'%(mobile,e))
             return Response({'message':'failed'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
