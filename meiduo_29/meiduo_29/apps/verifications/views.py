@@ -13,7 +13,7 @@ import logging
 from verifications import constants
 from verifications.serializers import ImageCodeCheckSerializer
 from meiduo_29.utils.yuntongxun.sms import CCP
-
+from celery_tasks.sms.tasks import send_sms_code
 logger = logging.getLogger('django')
 
 class ImageCodeView(APIView):
@@ -83,22 +83,26 @@ class SMSCodeView(GenericAPIView):
         pl.execute()
 
         # 发送短信
-        try:
-            ccp = CCP()
-            #参数 手机号 [短信验证码,有效期] 短信模版
-            expires = constants.SMS_CODE_REDIS_EXPIRES // 60
-            result = ccp.send_template_sms(mobile,[sms_code,expires],constants.SMS_CODE_TEMP_ID)
-            print(sms_code)
-        except Exception as e:
-            logger.error('短信发送[异常][mobile:%s,message:%s]'%(mobile,e))
-            return Response({'message':'failed'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            if result == 0:
-                logger.info('短信发送[正常][mobile:%s]'%(mobile))
-                return Response({'message': 'OK'})
-
-            else:
-                logger.warning('短信发送[失败][mobile:%s]'%(mobile))
-                return Response({'message': 'failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # try:
+        #     ccp = CCP()
+        #     #参数 手机号 [短信验证码,有效期] 短信模版
+        #     expires = constants.SMS_CODE_REDIS_EXPIRES // 60
+        #     result = ccp.send_template_sms(mobile,[sms_code,expires],constants.SMS_CODE_TEMP_ID)
+        #     print(sms_code)
+        # except Exception as e:
+        #     logger.error('短信发送[异常][mobile:%s,message:%s]'%(mobile,e))
+        #     return Response({'message':'failed'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # else:
+        #     if result == 0:
+        #         logger.info('短信发送[正常][mobile:%s]'%(mobile))
+        #         return Response({'message': 'OK'})
+        #
+        #     else:
+        #         logger.warning('短信发送[失败][mobile:%s]'%(mobile))
+        #         return Response({'message': 'failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # 使用celery发送短信
+        expires = constants.SMS_CODE_REDIS_EXPIRES // 60
+        send_sms_code.delay(mobile,sms_code,expires,constants.SMS_CODE_TEMP_ID)
+        return Response({'message': 'OK'})
 
         # 返回
