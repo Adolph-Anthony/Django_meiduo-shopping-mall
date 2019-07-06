@@ -8,6 +8,9 @@ from users.models import User
 # Create your views here.
 
 # url(r'^usernames/(?P<username>\w{5,20})/count/$', views.UsernameCountView.as_view()),
+from users.serializers import CreateUserSerializer
+
+
 class UsernameCountView(APIView):
     '''请求方式： GET usernames/(?P<username>\w{5,20})/count/
 

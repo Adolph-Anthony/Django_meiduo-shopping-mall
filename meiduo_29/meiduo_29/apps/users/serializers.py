@@ -6,25 +6,20 @@ from users.models import User
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    '''创建用户的序列化器'''
+    """创建用户的序列化器"""
     password2 = serializers.CharField(label='确认密码', write_only=True)
     sms_code = serializers.CharField(label='短信验证码', write_only=True)
     allow = serializers.CharField(label='同意协议', write_only=True)
+    token=serializers.CharField(label='JWT token',read_only=True)
 
     class Meta:
-        '''
-        id 是默认设置的
-        password 不需要返回到前端
-        '''
         model = User
-        fields = ('username, password, password2, sms_code, mobile, allow')
-        # 额外说明
+        fields = ('id', 'username', 'password', 'password2', 'sms_code', 'mobile', 'allow','token')
         extra_kwargs = {
             'username': {
                 'min_length': 5,
                 'max_length': 20,
                 'error_messages': {
-                    #如果不符合要求 返回给前端具体的信息
                     'min_length': '仅允许5-20个字符的用户名',
                     'max_length': '仅允许5-20个字符的用户名',
                 }
@@ -58,7 +53,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('两次密码不一致')
 
         # 判断短信验证码
-        redis_conn = get_redis_connection('verify_codes')
+        redis_conn = get_redis_connection('verify_code')
         mobile = data['mobile']
         real_sms_code = redis_conn.get('sms_%s' % mobile)
         if real_sms_code is None:
