@@ -220,6 +220,11 @@ var vm = new Vue({
                     })
                     //代表保存成功
                     .then(response => {
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        localStorage.token = response.data.token;
+                        localStorage.username = response.data.username;
+                        localStorage.user_id = response.data.id;
                         location.href = '/index.html';
                     })
                     //代表失败

@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a9a1cb95-a602-4372-a88e-8f36532af4e6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/serializers.py" afterPath="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/serializers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meiduo_29/meiduo_29/settings/dev.py" afterPath="$PROJECT_DIR$/meiduo_29/meiduo_29/settings/dev.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front_end_pc/js/register.js" afterPath="$PROJECT_DIR$/front_end_pc/js/register.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -65,7 +64,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="175">
@@ -109,6 +108,26 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="register.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front_end_pc/js/register.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="362">
+              <caret line="226" column="61" lean-forward="false" selection-start-line="226" selection-start-column="61" selection-end-line="226" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manage.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/meiduo_29/manage.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="44">
+              <caret line="5" column="53" lean-forward="true" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="75" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/.virtualenvs/meiduo/lib/python3.5/site-packages/rest_framework/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -119,33 +138,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/meiduo_29/meiduo_29/apps/verifications/serializers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="4" column="43" lean-forward="false" selection-start-line="4" selection-start-column="43" selection-end-line="4" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
               <caret line="5" column="16" lean-forward="false" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/meiduo_29/meiduo_29/apps/verifications/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="5" column="1" lean-forward="false" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -210,11 +207,11 @@
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/verifications/views.py" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/urls.py" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/verifications/urls.py" />
-        <option value="$PROJECT_DIR$/front_end_pc/js/register.js" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/views.py" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/urls.py" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/settings/dev.py" />
         <option value="$PROJECT_DIR$/meiduo_29/meiduo_29/apps/users/serializers.py" />
+        <option value="$PROJECT_DIR$/front_end_pc/js/register.js" />
       </list>
     </option>
   </component>
@@ -381,7 +378,7 @@
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="JavaScriptPreferStrict" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/apps/users/views.py&#10;de&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/settings/dev.py&#10;view&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/apps/users/views.py&#10;re&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/front_end_pc/js/register.js&#10;dev&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/settings/dev.py&#10;mo&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/apps/users/models.py" />
+    <property name="SearchEverywhereHistoryKey" value="re&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/front_end_pc/js/register.js&#10;de&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/settings/dev.py&#10;view&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/apps/users/views.py&#10;dev&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/settings/dev.py&#10;mo&#9;FILE&#9;file:///home/python/Django_meiduo-shopping-mall/meiduo_29/meiduo_29/apps/users/models.py" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -753,7 +750,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562418215893</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="jwt认证后端逻辑实现">
+      <created>1562485785533</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1562485785533</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView">
@@ -831,7 +835,8 @@
     <MESSAGE value="判断账号是否存在&#10;" />
     <MESSAGE value="注册后端代码" />
     <MESSAGE value="注册后端代码bug修复,前段代码逻辑完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="注册后端代码bug修复,前段代码逻辑完成" />
+    <MESSAGE value="jwt认证后端逻辑实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="jwt认证后端逻辑实现" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1057,13 +1062,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meiduo_29/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="5" column="53" lean-forward="true" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meiduo_29/celery_tasks/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -1118,14 +1116,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
           <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front_end_pc/js/register.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1224,6 +1214,22 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meiduo_29/manage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="5" column="53" lean-forward="true" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front_end_pc/js/register.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="226" column="61" lean-forward="false" selection-start-line="226" selection-start-column="61" selection-end-line="226" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>
