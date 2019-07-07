@@ -14,6 +14,8 @@ import os
 import sys
 #sys.path 保存了python解释器的导包路径
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 # print(sys.path)
@@ -208,7 +210,21 @@ AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
     # 异常处理
     'EXCEPTION_HANDLER': 'meiduo_29.utils.exceptions.exception_handler',
+    # 认证
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # token 用户认证
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # admin 需要使用session
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
+
+# JWT
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1), # token 有效期
+}
+
 
 # CORS
 CORS_ORIGIN_WHITELIST = (
