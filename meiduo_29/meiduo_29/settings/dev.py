@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     # 验证子应用
     'verifications.apps.VerificationsConfig',
+    # 第三方登录
+    'oauth.apps.OauthConfig'
 
 
 
