@@ -1,8 +1,15 @@
 from django.shortcuts import render
+from rest_framework import request
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+
 from .utils import OAuthQQ
 #  url(r'^qq/authorization/$', views.QQAuthURLview.as_view()),
+
+from .exceptions import OAuthQQAPIError
+from .models import OAuthQQUser
 class QQAuthURLview(APIView):
     '''
     获取QQ登录的url
@@ -32,4 +39,56 @@ class QQAuthURLview(APIView):
         return Response({'login_url':login_url})
 
 
+
+class QQAuthUserView(APIView):
+    """
+    获取QQ登录的用户的身份信息  ?code=xxxx
+    请求方式 ： GET /oauth/qq/user/?code=xxx
+
+    请求参数： 查询字符串参数
+
+    参数	    类型	    是否必传	说明
+    code	str	    是	    qq返回的授权凭证code
+    """
+    def get(self,request):
+        # 获取 code ,就一个不使用序列化了
+        code = request.query_params.get('code')
+
+        if not code:
+            return Response({'message': '缺少code'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 凭借 code 获取 access_token
+        oauth_qq = OAuthQQ()
+        try:
+            access_token = oauth_qq.get_access_token(code)
+
+            # 凭借 access_token 获取 openid
+            openid = oauth_qq.get_openid(access_token)
+        except OAuthQQAPIError:
+            return Response({'message':'访问QQ接口异常'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        try:
+            # 根据openid查询数据库OAuthQQUser  判断数据是否存在
+
+            oauth_qq_user = OAuthQQUser.objects.get(openid = openid)
+
+        except OAuthQQUser.DoesNotExist:
+            # 如果数据不存在,处理open
+            access_token = oauth_qq.generate_bind_user_access_token(openid)
+            return Response({'access_token': access_token})
+        else:
+            #  如果数据存在,表示用户以及绑定过身份,签发jwt token
+            # jwt签发
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+            user = oauth_qq_user.user
+            # 将当前的用户信息放入载荷
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+
+            return Response({
+                'username':user.username,
+                'user_id':user.id,
+                'token':token
+            })
 
