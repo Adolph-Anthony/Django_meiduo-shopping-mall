@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import request
 from rest_framework import status
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
@@ -10,6 +11,7 @@ from .utils import OAuthQQ
 
 from .exceptions import OAuthQQAPIError
 from .models import OAuthQQUser
+from .serializers import OAuthQQUserSerializer
 class QQAuthURLview(APIView):
     '''
     获取QQ登录的url
@@ -30,7 +32,6 @@ class QQAuthURLview(APIView):
 
         # 获取next参数
         next = request.query_params.get("next")
-
         # 拼接QQ登录网络
         oauth_qq = OAuthQQ(state=next)
         login_url = oauth_qq.get_qq_login_url()
@@ -40,7 +41,7 @@ class QQAuthURLview(APIView):
 
 
 
-class QQAuthUserView(APIView):
+class QQAuthUserView(CreateAPIView):
     """
     获取QQ登录的用户的身份信息  ?code=xxxx
     请求方式 ： GET /oauth/qq/user/?code=xxx
@@ -50,7 +51,11 @@ class QQAuthUserView(APIView):
     参数	    类型	    是否必传	说明
     code	str	    是	    qq返回的授权凭证code
     """
+    serializer_class = OAuthQQUserSerializer
+
+
     def get(self,request):
+        #     返回openid 查看是否绑定
         # 获取 code ,就一个不使用序列化了
         code = request.query_params.get('code')
 
@@ -91,4 +96,18 @@ class QQAuthUserView(APIView):
                 'user_id':user.id,
                 'token':token
             })
+    # 因为是CreateAPIView视图不需要写post
+    # def post(self,request):
+    #     # 获取数据
+    #
+    #     # 校验数据
+    #
+    #     # 判断用户是否存在
+    #
+    #     # 如果存在,绑定,创建OAuthQQUser数据库数据
+    #
+    #     # 如果不存在,创建User,创建OAuthQQUser数据库数据
+    #
+    #     # 签发jwt
+    #     pass
 
