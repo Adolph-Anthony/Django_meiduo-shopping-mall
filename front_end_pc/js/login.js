@@ -1,4 +1,6 @@
-
+/**
+ * Created by python on 19-7-4.
+ */
 var vm = new Vue({
     el: '#app',
     data: {
@@ -68,7 +70,7 @@ var vm = new Vue({
                         // 跳转页面
                         var return_url = this.get_query_string('next');
                         if (!return_url) {
-                            return_url = '/index.html';
+                            return_url = '/index_origin.html';
                         }
                         location.href = return_url;
                     })
@@ -93,9 +95,7 @@ var vm = new Vue({
                 })
                 .catch(error => {
                     console.log(error.response.data);
-                })
+            })
         }
     }
-});/**
- * Created by python on 19-7-7.
- */
+});

@@ -1,23 +1,23 @@
 from django_redis import get_redis_connection
 from rest_framework import serializers
+from rest_framework_jwt.settings import api_settings
 
-from oauth.models import OAuthQQUser
 from users.models import User
-from .utils import Oa, OAuthQQ
-
-
+from .utils import OAuthQQ
+from .models import OAuthQQUser
 class OAuthQQUserSerializer(serializers.ModelSerializer):
-    access_token = serializers.CharField(label='操作凭证',write_only=True)
-    mobile = serializers.RegexField(label='手机号', regex=r'^1[3-9]\d{9}$')
-    token = serializers.CharField(read_only=True)
     sms_code = serializers.CharField(label='短信验证码',write_only=True)
+    access_token = serializers.CharField(label='操作凭证',write_only=True)
+    token=serializers.CharField(read_only=True)
+    mobile = serializers.RegexField(label='手机号', regex=r'^1[3-9]\d{9}$')
+    # password = serializers.CharField(label='密码', max_length=20, min_length=8)
 
     class Meta:
-        Model = User
-        fields = ('mobile','password','sms_code','access_token','token','id','username','token')
-        extra_kwargs = {
+        model=User
+        fields=('mobile','password','sms_code','access_token','id','username','token')
+        extra_kwargs={
             'username':{
-                'read_only':True
+              'read_only':True
             },
             'password': {
                 'write_only': True,
@@ -27,23 +27,22 @@ class OAuthQQUserSerializer(serializers.ModelSerializer):
                     'min_length': '仅允许8-20个字符的密码',
                     'max_length': '仅允许8-20个字符的密码',
                 }
-        }
+            }
         }
     # 校验数据
-    def validate(self, attrs):
+    def validate(self,attrs):
         # 检验access_token
         access_token = attrs['access_token']
-        openid = OAuthQQ.check_bind_user_access_token(access_token)
+        openid = OAuthQQ.check_bind_user_access(access_token)
         if not openid:
             raise serializers.ValidationError('无效的access_token')
-        # 增加 openid 属性
+
         attrs['openid'] = openid
 
         # 检验短信验证码
         mobile = attrs['mobile']
         sms_code = attrs['sms_code']
-        # 连接redis  verify_codes数据库
-        redis_conn = get_redis_connection('verify_codes')
+        redis_conn = get_redis_connection('verify_code')
         real_sms_code = redis_conn.get('sms_%s' % mobile)
         if real_sms_code.decode() != sms_code:
             raise serializers.ValidationError('短信验证码错误')
@@ -58,20 +57,26 @@ class OAuthQQUserSerializer(serializers.ModelSerializer):
             if not user.check_password(password):
                 raise serializers.ValidationError('密码错误')
             attrs['user'] = user
-        return attrs
 
-    def create(self, validated_data):
-        user = validated_data.get('user')
+        return attrs
+    def create(self,validated_data):
+        openid=validated_data['openid']
+        user=validated_data.get('user')
+        mobile=validated_data['mobile']
+        password=validated_data['password']
+        # 判断用户是否存在
         if not user:
-            # 如果不存在,创建User,创建OAuthQQUser数据库数据
-            user = User.objects.create_user(
-                username=validated_data['mobile'],
-                password=validated_data['password'],
-                mobile=validated_data['mobile'],
-            )
-        # 如果存在,绑定,创建OAuthQQUser数据库数据
-        OAuthQQUser.objects.create(
-            openid=validated_data['openid'],
-            user=user
-        )
+            # 如果存在，绑定　创建OAuthQQUser数据
+            user=User.objects.create_user(username=mobile,mobile=mobile,password=password)
+
+        OAuthQQUser.objects.create(user=user,openid=openid)
+
+
+        # 签发JWT_token
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        user.token = token
         return user

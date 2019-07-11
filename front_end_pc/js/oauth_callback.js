@@ -1,3 +1,6 @@
+/**
+ * Created by python on 19-7-5.
+ */
 var vm = new Vue({
     el: '#app',
     data: {
@@ -19,12 +22,12 @@ var vm = new Vue({
         sending_flag: false, // 正在发送短信标志
 
         password: '',
-        mobile: '', 
+        mobile: '',
         image_code: '',
         sms_code: '',
         access_token: ''
     },
-        mounted: function(){
+     mounted: function(){
         // 从路径中获取qq重定向返回的code
         var code = this.get_query_string('code');
         axios.get(this.host + '/oauth/qq/user/?code=' + code, {
@@ -53,8 +56,8 @@ var vm = new Vue({
             })
     },
     methods: {
-        // 获取url路径参数    
-        get_query_string: function(name){ 
+        // 获取url路径参数
+        get_query_string: function(name){
             var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
             var r = window.location.search.substr(1).match(reg);
             if (r != null) {
@@ -90,7 +93,7 @@ var vm = new Vue({
                 this.error_password = true;
             } else {
                 this.error_password = false;
-            }        
+            }
         },
         check_phone: function (){
             var re = /^1[345789]\d{9}$/;
@@ -107,7 +110,7 @@ var vm = new Vue({
                 this.error_image_code = true;
             } else {
                 this.error_image_code = false;
-            }    
+            }
         },
         check_sms_code: function(){
             if(!this.sms_code){
@@ -121,7 +124,7 @@ var vm = new Vue({
         send_sms_code: function(){
             if (this.sending_flag == true) {
                 return;
-            } 
+            }
             this.sending_flag = true;
 
             // 校验参数，保证输入框有数据填写
@@ -167,12 +170,39 @@ var vm = new Vue({
                     this.sending_flag = false;
                 })
         },
-        // 保存
+             // 保存
         on_submit: function(){
             this.check_pwd();
             this.check_phone();
             this.check_sms_code();
 
+            if(this.error_password == false && this.error_phone == false && this.error_sms_code == false) {
+                axios.post(this.host + '/oauth/qq/user/', {
+                        password: this.password,
+                        mobile: this.mobile,
+                        sms_code: this.sms_code,
+                        access_token: this.access_token
+                    }, {
+                        responseType: 'json',
+                    })
+                    .then(response => {
+                        // 记录用户登录状态
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        localStorage.token = response.data.token;
+                        localStorage.user_id = response.data.id;
+                        localStorage.username = response.data.username;
+                        location.href = this.get_query_string('state');
+                    })
+                    .catch(error=> {
+                        if (error.response.status == 400) {
+                            this.error_sms_code_message = error.response.data.message;
+                            this.error_sms_code = true;
+                        } else {
+                            console.log(error.response.data);
+                        }
+                    })
+            }
         }
     }
 });
