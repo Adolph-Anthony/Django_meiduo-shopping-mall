@@ -13,9 +13,19 @@ from .exceptions import OAuthQQAPIError
 from .models import OAuthQQUser
 from .serializers import OAuthQQUserSerializer
 class QQAuthURLView(APIView):
-    """
-    获取QQ登录的url
-    """
+    '''
+       获取QQ登录的url	    获取QQ登录的url
+       后端接口设计：	    """
+       请求方式： GET /oauth/qq/authorization/?next=xxx	    def get(self, request):
+
+       请求参数： 查询字符串
+       参数名	    类型	    是否必须	说明
+       next	        str	    否	    用户QQ登录成功后进入美多商城的哪个网址
+       返回数据：    JSON
+        {
+           "login_url": "https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101474184&redirect_uri=http%3A%2F%2Fwww.meiduo.site%3A8080%2Foauth_callback.html&state=%2F&scope=get_user_info"
+       }
+       '''
     def get(self, request):
         """
         提供用于qq登录的url
@@ -30,14 +40,18 @@ class QQAuthURLView(APIView):
 
 class QQAuthUserView(CreateAPIView):
     """
-    QQ登录的用户
+    获取QQ登录的用户的身份信息  ?code=xxxx
+    请求方式 ： GET /oauth/qq/user/?code=xxx
+    请求参数： 查询字符串参数
+    参数	    类型	    是否必传	说明
+    code	str	    是	    qq返回的授权凭证code
     """
     serializer_class = OAuthQQUserSerializer
     def get(self,request):
         #获取code
         code=request.query_params.get('code')
         if not code:
-            return Response({'mesage':'缺少coe'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message':'缺少code'},status=status.HTTP_400_BAD_REQUEST)
         #凭借code　获取access_token
         oauth_qq=OAuthQQ()
         try:
@@ -51,10 +65,8 @@ class QQAuthUserView(CreateAPIView):
         #根据openid查询上数据库OAuthQQUser 判断数据是否存在
         try:
             oauth_qq_user=OAuthQQUser.objects.get(openid=openid)
-            # print(1)
         except OAuthQQUser.DoesNotExist:
-            #如果数据不存在，处理poenid　并返回
-            # print(2)
+            #如果数据不存在，处理openid　并返回
             access_token=oauth_qq.generate_bind_access_token(openid)
             return Response({'access_token':access_token})
         else:
@@ -62,7 +74,6 @@ class QQAuthUserView(CreateAPIView):
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
             jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
             user=oauth_qq_user.user
-            # print(3)
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
             return Response({

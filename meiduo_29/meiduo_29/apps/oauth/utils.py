@@ -32,7 +32,11 @@ class OAuthQQ(object):
         url += urllib.parse.urlencode(params)
         return url
     def get_access_token(self,code):
-
+        '''
+              获取access_token
+              :param code: qq提供的code
+              :return: access_token
+              '''
         url='https://graph.qq.com/oauth2.0/token?'
         params={
             'grant_type':'authorization_code',
