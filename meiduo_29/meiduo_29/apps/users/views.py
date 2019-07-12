@@ -116,6 +116,20 @@ class UserDetailView(RetrieveAPIView):
     '''
     用户基本信息
     RetrieveAPIView:查询模型的实例的具体视图,自带get方法
+
+    请求方式： GET /user/
+
+    请求参数： 无
+
+    返回数据： JSON
+
+    返回值	        类型	    是否必须	说明
+    id	            int	    是	    用户id
+    username	    str	    是	    用户名
+    mobile	        str	    是	    手机号
+    email	        str	    是	    email邮箱
+    email_active	bool	是	    邮箱是否通过验证
+
     '''
     # 指明视图使用的序列化器
     serializer_class = serializers.UserDetailSerializer
@@ -134,6 +148,21 @@ class UserDetailView(RetrieveAPIView):
 
 # PUT /email/
 class EmailView(UpdateAPIView):
+    '''
+    UpdateAPIView 用于更新模型实例的具体视图。
+    请求方式：PUT /email/
+
+    请求参数： JSON 或 表单
+
+    参数	    类型	是否必须	说明
+    email	str	是	    Email邮箱
+    返回数据： JSON
+
+    返回值	类型	是否必须	说明
+    id	    int	是	    用户id
+    email	str	是	    Email邮箱
+    '''
+    
     serializer_class = serializers.EmailSerializer
     permission_classes = [IsAuthenticated]
 
