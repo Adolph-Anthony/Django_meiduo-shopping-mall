@@ -64,6 +64,7 @@ class SMSCodeView(GenericAPIView):
     def get(self,request,mobile):
         # 接受参数 校验参数   序列化器验证
         # request.query_params  rest自带方法 查询字符串里的所有参数
+        print('request.query_params',request.query_params)
         serializer = self.get_serializer(data = request.query_params)
         #设置验证并且抛出异常
         serializer.is_valid(raise_exception = True)

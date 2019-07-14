@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.generics import  CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -175,3 +176,35 @@ class EmailView(UpdateAPIView):
         # 查询user
         # 更新数据
         # 序列化返回
+
+
+# url(r'^emails/verification/$', views.VerifyEmailView.as_view()),
+class VerifyEmailView(APIView):
+    """
+    邮箱验证
+    请求方式：GET /emails/verification/?token=xxx
+
+    请求参数： 查询字符串参数
+
+    参数	        类型	是否必须	说明
+    token	    str	是	    用于验证邮箱的token
+    返回数据： JSON
+
+    返回值	类型	是否必须	说明
+    message	str	是	    验证处理结果
+    """
+
+    def get(self, request):
+        # 获取token
+        token = request.query_params.get('token')
+        if not token:
+            return Response({'message': '缺少token'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 验证token
+        user = User.check_verify_email_token(token)
+        if user is None:
+            return Response({'message': '链接信息无效'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user.email_active = True
+            user.save()
+            return Response({'message': 'OK'})
