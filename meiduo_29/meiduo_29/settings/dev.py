@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     # 验证子应用
     'verifications.apps.VerificationsConfig',
     # 第三方登录
-    'oauth.apps.OauthConfig'
-
+    'oauth.apps.OauthConfig',
+    # 用户地域信息
+    'areas.apps.AreasConfig'
 
 
 ]
