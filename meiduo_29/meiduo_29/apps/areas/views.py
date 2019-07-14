@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 # Create your views here.
 # 第一级
@@ -20,7 +19,7 @@ from areas.models import Area
 from areas.serializers import AreaSerializer
 
 
-class AreasViewSet(ReadOnlyModelViewSet):
+class AreasViewSet(CacheResponseMixin,ReadOnlyModelViewSet):
     '''
 
     请求省份数据
@@ -48,9 +47,13 @@ class AreasViewSet(ReadOnlyModelViewSet):
     查询单一数据对象
     序列化返回
     '''
+    # 关闭分页处理
+    pagination_class = None
+
     def get_queryset(self):
         if self.action == 'list':
             # 获取arent = None的全部资源
+            print("1")
             return Area.objects.filter(parent = None)
         else:
             # 只获取当前<pk>存在的情况下,跟pk有关的资源

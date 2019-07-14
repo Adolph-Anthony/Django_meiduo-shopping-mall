@@ -1,11 +1,11 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 from . import views
-urlpatterns=[
-]
+urlpatterns = []
+
 # 提供默认的根路由
 router = DefaultRouter()
-router.register('areas',views.AreasViewSet,base_name = "areas" )
+router.register(r'areas',views.AreasViewSet,base_name = "areas" )
 urlpatterns += router.urls
 
 
