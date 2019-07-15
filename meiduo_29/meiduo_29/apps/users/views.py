@@ -218,18 +218,27 @@ class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
     用户地址新增与修改
     """
     serializer_class = serializers.UserAddressSerializer
+    # 用户认证
     permissions = [IsAuthenticated]
 
     def get_queryset(self):
+        # 得到查询集,默认逻辑未删除的地址信息
+        # 你现在所需要的request的用户地址信息,过滤没有被逻辑删除的
         return self.request.user.addresses.filter(is_deleted=False)
 
     def list(self, request, *args, **kwargs):
         """
-        用户地址列表数据
+        用户全部地址列表数据
+        因为返回的参数太多不继承listModelView
+        get /addresses/
         """
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         user = self.request.user
+
+        # print('user.id',user.id)
+        # print('user.default_address_id',user.default_address_id)
+        # print('serializer.data:',serializer.data)
         return Response({
             'user_id': user.id,
             'default_address_id': user.default_address_id,
@@ -240,17 +249,21 @@ class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
     def create(self, request, *args, **kwargs):
         """
         保存用户地址数据
+        post /addresses/
         """
         # 检查用户地址数据数目不能超过上限
         count = request.user.addresses.count()
+        # 如果现有的地址数目大于20条
         if count >= constants.USER_ADDRESS_COUNTS_LIMIT:
             return Response({'message': '保存地址数据已达到上限'}, status=status.HTTP_400_BAD_REQUEST)
-        print('create',1)
+        # 校验通过之后执行继承的create方法
         return super().create(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         """
         处理删除
+        delete /addresses/<PK>
+        返回204代表删除成功
         """
         address = self.get_object()
 
@@ -264,6 +277,7 @@ class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
     def status(self, request, pk=None, address_id=None):
         """
         设置默认地址
+        put /addresses/<pk>/status/
         """
         address = self.get_object()
         request.user.default_address = address
@@ -274,6 +288,7 @@ class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
     def title(self, request, pk=None, address_id=None):
         """
         修改标题
+        put /addresses/<pk>/title/
         """
         address = self.get_object()
         serializer = serializers.AddressTitleSerializer(instance=address, data=request.data)

@@ -52,7 +52,10 @@ INSTALLED_APPS = [
     'oauth.apps.OauthConfig',
     # 用户地域信息
     'areas.apps.AreasConfig'
-
+    # 商品
+    'contents.apps.ContentsConfig'
+    # 广告
+    'goods.apps.GoodsConfig'
 
 ]
 
