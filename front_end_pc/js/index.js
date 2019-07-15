@@ -1,9 +1,6 @@
-/**
- * Created by python on 19-7-11.
- */
 var vm = new Vue({
     el: '#app',
-    //声明Vue使用的模板变量语法
+    // 声明Vue使用的模板变量语法
     delimiters: ['[[', ']]'],
     data: {
         host,

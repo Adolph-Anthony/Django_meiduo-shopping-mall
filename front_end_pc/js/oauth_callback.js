@@ -1,6 +1,3 @@
-/**
- * Created by python on 19-7-5.
- */
 var vm = new Vue({
     el: '#app',
     data: {
@@ -27,11 +24,12 @@ var vm = new Vue({
         sms_code: '',
         access_token: ''
     },
-     mounted: function(){
+    mounted: function(){
         // 从路径中获取qq重定向返回的code
         var code = this.get_query_string('code');
         axios.get(this.host + '/oauth/qq/user/?code=' + code, {
                 responseType: 'json',
+                withCredentials: true,
             })
             .then(response => {
                 if (response.data.user_id){
@@ -170,7 +168,7 @@ var vm = new Vue({
                     this.sending_flag = false;
                 })
         },
-             // 保存
+        // 保存
         on_submit: function(){
             this.check_pwd();
             this.check_phone();
@@ -184,6 +182,7 @@ var vm = new Vue({
                         access_token: this.access_token
                     }, {
                         responseType: 'json',
+                        withCredentials: true,
                     })
                     .then(response => {
                         // 记录用户登录状态

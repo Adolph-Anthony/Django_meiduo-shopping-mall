@@ -55,8 +55,8 @@ var vm = new Vue({
             // 设置页面中图片验证码img标签的src属性
             this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
         },
-       // 检查用户名
-    check_username: function (){
+        // 检查用户名
+        check_username: function (){
             var len = this.username.length;
             if(len<5||len>20) {
                 this.error_name_message = '请输入5-20个字符的用户名';
@@ -97,7 +97,7 @@ var vm = new Vue({
                 this.error_check_password = false;
             }
         },
-         // 检查手机号
+        // 检查手机号
         check_phone: function (){
             var re = /^1[345789]\d{9}$/;
             if(re.test(this.mobile)) {
@@ -199,47 +199,49 @@ var vm = new Vue({
         },
         // 注册
         on_submit: function(){
-        this.check_username();
-        this.check_pwd();
-        this.check_cpwd();
-        this.check_phone();
-        this.check_sms_code();
-        this.check_allow();
+            this.check_username();
+            this.check_pwd();
+            this.check_cpwd();
+            this.check_phone();
+            this.check_sms_code();
+            this.check_allow();
 
-        if(this.error_name == false && this.error_password == false && this.error_check_password == false
-            && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
-            axios.post(this.host + '/users/', {
-                    username: this.username,
-                    password: this.password,
-                    password2: this.password2,
-                    mobile: this.mobile,
-                    sms_code: this.sms_code,
-                    allow: this.allow.toString()
-                }, {
-                    responseType: 'json'
-                })
-                .then(response => {
-                    // 记录用户的登录状态
-                    sessionStorage.clear();
-                    localStorage.clear();
+            if(this.error_name == false && this.error_password == false && this.error_check_password == false
+                && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
 
-                    localStorage.token = response.data.token;
-                    localStorage.username = response.data.username;
-                    localStorage.user_id = response.data.id;
-                    location.href = '/index_origin.html';
-                })
-                .catch(error=> {
-                    if (error.response.status == 400) {
-                        if ('non_field_errors' in error.response.data) {
-                            this.error_sms_code_message = error.response.data.non_field_errors[0];
+                axios.post(this.host + '/users/', {
+                        username: this.username,
+                        password: this.password,
+                        password2: this.password2,
+                        mobile: this.mobile,
+                        sms_code: this.sms_code,
+                        allow: this.allow.toString()
+                    }, {
+                        responseType: 'json'
+                    })
+                    .then(response => {
+                        // 记录用户的登录状态
+                        sessionStorage.clear();
+                        localStorage.clear();
+
+                        localStorage.token = response.data.token;
+                        localStorage.username = response.data.username;
+                        localStorage.user_id = response.data.id;
+
+                        location.href = '/index.html';
+                    })
+                    .catch(error=> {
+                        if (error.response.status == 400) {
+                            if ('non_field_errors' in error.response.data) {
+                                this.error_sms_code_message = error.response.data.non_field_errors[0];
+                            } else {
+                                this.error_sms_code_message = '数据有误';
+                            }
+                            this.error_sms_code = true;
                         } else {
-                            this.error_sms_code_message = '数据有误';
+                            console.log(error.response.data);
                         }
-                        this.error_sms_code = true;
-                    } else {
-                        console.log(error.response.data);
-                    }
-                })
+                    })
             }
         }
     }
