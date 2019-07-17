@@ -27,6 +27,7 @@ class SKUSpecificationAdmin(admin.ModelAdmin):
         generate_static_sku_detail_html.delay(obj.sku.id)
 
     def delete_model(self, request, obj):
+        # 因为obj下面要删除,异步任务要用obj.sku.id,先保存变量
         sku_id = obj.sku.id
         obj.delete()
         from celery_tasks.html.tasks import generate_static_sku_detail_html
@@ -43,7 +44,7 @@ class SKUImageAdmin(admin.ModelAdmin):
         from celery_tasks.html.tasks import generate_static_sku_detail_html
         generate_static_sku_detail_html.delay(obj.sku.id)
 
-        # 设置SKU默认图片
+    # 设置SKU默认图片
         sku = obj.sku
         # 如果默认图片为空
         if not sku.default_image_url:
