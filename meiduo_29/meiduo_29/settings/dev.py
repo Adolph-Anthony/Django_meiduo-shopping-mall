@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_crontab',# 定时任务
     'corsheaders',
     'goods.apps.GoodsConfig', 'ckeditor',  # 富文本编辑器
     'ckeditor_uploader',  # 富文本编辑器上传图片模块
@@ -292,6 +293,20 @@ CKEDITOR_CONFIGS = {
 }
 CKEDITOR_UPLOAD_PATH = ''  # 上传图片保存路径，使用了FastDFS，所以此处设为''
 
+
 # 生成页面静态化保存目录
 # dirname:寻找父目录
 GENERATED_STATIC_HTML_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)),'front_end_pc')
+
+# 解决crontab中文问题 , 双重保险
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+
+CRONJOBS = [
+    # 每5分钟执行一次生成主页静态文件
+    # ('*/5 * * * *', 'contents.crons.generate_static_index_html', '>> /Users/delron/Desktop/meiduo_mall/logs/crontab.log')
+    ('*/5 * * * *', 'contents.crons.generate_static_index_html', '>> ' +os.path.join(os.path.dirname(BASE_DIR)+'/logs/crontab.log'))
+]
+'''
+*/5 * * * *   每五分钟执行一次
+5 * * * *   每小时五分钟时候执行一次
+'''
