@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django_redis import get_redis_connection
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, GenericAPIView
@@ -8,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
+from goods.models import SKU
 from users import constants
 from users import serializers
 from users.models import User
@@ -302,7 +304,7 @@ class AddressViewSet(CreateModelMixin, UpdateModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class UserBrowsingHistoryView(CreateAPIView, GenericAPIView):
+class UserBrowsingHistoryView(CreateAPIView):
     """
     用户浏览历史记录
     请求方式：POST /browse_histories/
@@ -320,4 +322,27 @@ class UserBrowsingHistoryView(CreateAPIView, GenericAPIView):
     serializer_class = serializers.AddUserBrowsingHistorySerializer
     # 权限认证
     permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        # user_id
+        user_id = request.user.id
+        print('user_id',user_id)
+        # 查询redis
+        redis_conn = get_redis_connection("history")
+        sku_id_list= redis_conn.lrange("history_%s" % user_id, 0, constants.USER_BROWSING_HISTORY_MAX_LIMIT )
+        print('sku_id_list',sku_id_list)
+        # 数据库
+        # 这么查顺序是mysql里的顺序
+        # SKU.objects.filter(id__in = sku_id_list)
+        skus = []
+        for sku_id in sku_id_list:
+            sku = SKU.objects.get(id=sku_id)
+            print('sku',sku)
+            skus.append(sku)
+        print('skus',skus)
+
+        # 序列化返回
+        serializer = serializers.SKUSerializer(skus,many= True)
+        print(serializer.data)
+        return Response(serializer.data)
 
