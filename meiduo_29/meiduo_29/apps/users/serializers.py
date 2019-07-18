@@ -202,10 +202,8 @@ class AddUserBrowsingHistorySerializer(serializers.Serializer):
         """
         # 拿到当前请求用户
         user_id = self.context['request'].user.id
-        print('user_id',user_id)
         # 序列化过后的sku数据
         sku_id = validated_data['sku_id']
-        print('sku_id',sku_id)
         # 连接数据库
         redis_conn = get_redis_connection("history")
         # 使用管道

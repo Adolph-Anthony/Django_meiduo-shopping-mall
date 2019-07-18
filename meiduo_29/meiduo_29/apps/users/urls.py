@@ -12,6 +12,7 @@ urlpatterns=[
     url(r'^mobiles/(?P<mobile>1[3-9]\d{9})/count/$', views.MobileCountView.as_view()),
     # 登录认证视图
     url(r'^authorizations/$', obtain_jwt_token),
+    url(r'^browse_histories/$', views.UserBrowsingHistoryView.as_view()),
 
 ]
 router = routers.DefaultRouter()

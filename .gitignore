@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+front_end_pc/goods/
 # C extensions
 *.so
 
