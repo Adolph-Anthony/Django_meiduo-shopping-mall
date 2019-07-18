@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.generics import  CreateAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, GenericAPIView
 from rest_framework.mixins import UpdateModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -39,6 +39,7 @@ class UsernameCountView(APIView):
     """
     用户名数量
     """
+
     def get(self, request, username):
         """
         获取指定用户名数量
@@ -51,6 +52,7 @@ class UsernameCountView(APIView):
         }
 
         return Response(data)
+
 
 # url(r'^mobiles/(?P<mobile>1[3-9]\d{9})/count/$', views.MobileCountView.as_view()),
 class MobileCountView(APIView):
@@ -73,6 +75,7 @@ class MobileCountView(APIView):
     count	int	是	    数量
     手机号数量
     """
+
     def get(self, request, mobile):
         """
         获取指定手机号数量
@@ -116,6 +119,7 @@ class UserView(CreateAPIView):
     '''
     serializer_class = CreateUserSerializer
 
+
 # get /user/
 class UserDetailView(RetrieveAPIView):
     '''
@@ -151,6 +155,7 @@ class UserDetailView(RetrieveAPIView):
 
         return self.request.user
 
+
 # PUT /email/
 class EmailView(UpdateAPIView):
     '''
@@ -167,14 +172,13 @@ class EmailView(UpdateAPIView):
     id	    int	是	    用户id
     email	str	是	    Email邮箱
     '''
-    
+
     serializer_class = serializers.EmailSerializer
     permission_classes = [IsAuthenticated]
 
-
     def get_object(self):
         return self.request.user
-    # def put(self):
+        # def put(self):
         # 获取email
         # 校验email
         # 查询user
@@ -213,7 +217,8 @@ class VerifyEmailView(APIView):
             user.save()
             return Response({'message': 'OK'})
 
-class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
+
+class AddressViewSet(CreateModelMixin, UpdateModelMixin, GenericViewSet):
     """
     用户地址新增与修改
     """
@@ -295,3 +300,24 @@ class AddressViewSet(CreateModelMixin,UpdateModelMixin, GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class UserBrowsingHistoryView(CreateAPIView, GenericAPIView):
+    """
+    用户浏览历史记录
+    请求方式：POST /browse_histories/
+
+    请求参数：JSON 或 表单
+
+    参数  	    类型	    是否必须	说明
+    sku_id	    int	    是  	    商品sku编号
+    返回数据：   JSON
+
+    返回值	类型	是否必须	说明
+    sku_id	int	是	    商品sku编号
+    """
+    # 设置序列化器
+    serializer_class = serializers.AddUserBrowsingHistorySerializer
+    # 权限认证
+    permission_classes = [IsAuthenticated]
+
